@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Modern HTML with jQuery and InstantSearch.js</title>
+        <!-- Include CSS for InstantSearch.js (optional) -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.0.0/themes/instantsearch.min.css"
+            rel="stylesheet"
+        />
+        <!-- Include jQuery library -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- Include InstantSearch.js library -->
+        <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.38.1/dist/instantsearch.production.min.js"></script>
+        <style>
+            /* Add some basic styling */
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 20px;
+            }
+            .search-container {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            #search-box {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+            .results-container {
+                list-style: none;
+                padding: 0;
+            }
+            .result-item {
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="search-container">
+            <input
+                type="text"
+                id="search-box"
+                placeholder="Search for products..."
+            />
+            <ul class="results-container" id="hits"></ul>
+        </div>
+
+        <script>
+            // Initialize InstantSearch.js
+            const search = instantsearch({
+                indexName: "YOUR_INDEX_NAME", // Replace with your Algolia index name
+                searchClient: algoliasearch(
+                    "YOUR_APP_ID",
+                    "YOUR_SEARCH_API_KEY",
+                ),
+            });
+
+            // Define the search box widget
+            search.addWidget(
+                instantsearch.widgets.searchBox({
+                    container: "#search-box",
+                }),
+            );
+
+            // Define the hits widget
+            search.addWidget(
+                instantsearch.widgets.hits({
+                    container: "#hits",
+                    templates: {
+                        item: `
+                        <li class="result-item">
+                            <strong>{{#helpers.highlight}}{ "attribute": "name" }{{/helpers.highlight}}</strong>
+                            <p>{{#helpers.highlight}}{ "attribute": "description" }{{/helpers.highlight}}</p>
+                        </li>
+                    `,
+                    },
+                }),
+            );
+
+            // Start InstantSearch
+            search.start();
+        </script>
+    </body>
+</html>
