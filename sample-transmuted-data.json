@@ -1,0 +1,46 @@
+[
+  {
+    "description_environment": "A black background comic depicting a workflow environment related to cybersecurity vulnerabilities and their management.",
+    "description_happening": "The comic illustrates a cycle where vendors surface random vulnerabilities for which dashboards are created, leading to developers being overwhelmed with busywork. Meanwhile, attackers exploit actual holes in the system, causing a breach. Shocked executives then allocate more budget for security as a result.",
+    "description_humor": "The humor lies in the satirical portrayal of the cybersecurity industry's focus on busywork and dashboards over addressing actual security holes, leading to breaches and budget increases.",
+    "caption": "THE VULNERABILITY-INDUSTRIAL COMPLEX; VENDORS HELPFULLY SURFACE RANDOM VULNS; BURYING DEVS WITH BUSYWORK; VIA DASHBOARDS; MEANWHILE...; DELIGHTED ATTACKERS ENTER THRU ACTUAL HOLES IN THE SYSTEM, LEADING TO A BREACH!; SHOCKED EXECUTIVES; MAGICALLY FIND MORE SECURITY BUDGET...; WHO'S REALLY BENEFITING HERE?",
+    "tags": [
+      "cybersecurity",
+      "vulnerabilities",
+      "developers",
+      "security budget",
+      "executives",
+      "attackers",
+      "breach",
+      "satire"
+    ],
+    "suggested_alt_text": "Comic titled 'The Vulnerability-Industrial Complex' showing how vendors surface random vulnerabilities, bury developers with busywork, and meanwhile, attackers cause breaches leading to executives allocating more security budget.",
+    "title": "Vulnerability-Industrial Complex"
+  },
+  {
+    "description_environment": "The image is a parody of a Jeopardy game show with a game board and contestants.",
+    "description_happening": "A person stands at a podium, asleep or tired, faced with a board of 'Engineering Jeopardy' questions. The board's categories are 'Design Decisions', 'Time Estimates', 'Tool Choices', 'Best Practices', and 'Performance', with corresponding monetary values. Many of the answers on the board are 'It Depends'. Three contestants are raising their hands frantically.",
+    "description_humor": "The humor arises from the absurdity of engineering questions often having the vague answer 'It Depends', poking fun at the complexity and uncertainty in the field of engineering.",
+    "caption": "ENGINEERING JEOPARDY; COSTS; DESIGN DECISIONS; TIME ESTIMATES; TOOL CHOICES; BEST PRACTICES; PERFORMANCE; IT DEPENDS; $200; $200; IT DEPENDS; $200; $200; $400; IT DEPENDS; $400; $400; IT DEPENDS; IT DEPENDS; $600; $600; $600; IT DEPENDS; $600; IT DEPENDS; $800; $800; IT DEPENDS; $800; $800; IT DEPENDS; IT DEPENDS; $1000; $1000; IT DEPENDS; $1000; $1000; @forrestbrazeal",
+    "tags": ["engineering", "jeopardy", "parody", "humor", "complexity"],
+    "suggested_alt_text": "A parody of Jeopardy called 'Engineering Jeopardy'. The board features categories like 'Design Decisions' and 'Performance' with many answers being 'It Depends'. A tired contestant stands at a podium while three contestants raise their hands eagerly.",
+    "title": "Engineering Jeopardy"
+  },
+  {
+    "description_environment": "The image is a comic strip divided into sections, each representing a different stage in the evolution of operations (Ops). Each section has a different creature and accompanying text.",
+    "description_happening": "The comic strip humorously depicts the evolution of operations from 'Ops' to 'TriceratOps' by showcasing different creatures and descriptions for each evolutionary stage.",
+    "description_humor": "The humor lies in personifying different stages of operational evolution as various creatures from simple cells to a dinosaur, accompanied by funny and exaggerated descriptions of each stage.",
+    "caption": "EVOLUTION OF OPERATIONS; OPS: Primordial, Protozoic; Born in the swamps of Perl; Operates in a single-cell silo; Surprisingly resilient. DevOps: A cross-functional marvel; Vastly increased agility; Secretly just a bunch of single cells that have learned not to kill each other. DevSecOps: More advanced, more paranoid; Security is automated right into its DNA; Knows that shared responsibility is the only escape from fossilization. DevSecMLOps: What even is this? Is it a fish with feet? We should probably leave it alone for a few million years and see what happens. TriceratOps: Does not care about your org structure; Vulnerable only to direct meteor strikes; What were we talking about, again?",
+    "tags": [
+      "DevOps",
+      "DevSecOps",
+      "DevSecMLOps",
+      "TriceratOps",
+      "IT Operations",
+      "Tech Evolution",
+      "Programming Humor"
+    ],
+    "suggested_alt_text": "Comic strip titled 'Evolution of Operations' depicting different operational stages as various creatures with humorous descriptions.",
+    "title": "Evolution of Ops"
+  }
+]

@@ -3,3 +3,6 @@ __pycache__/
 .env
 .vscode/
 .idea/
+.envrc
+pyrightconfig.json
+typesense-data/

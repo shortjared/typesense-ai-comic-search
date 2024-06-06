@@ -8,12 +8,15 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.8"
 openai = "^1.31.1"
+python-dotenv = "^1.0.1"
+typesense = "^0.21.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
 
 [tool.poetry.scripts]
-pipeline = "spells.transmute:main"
+transmute = "spells.transmute:main"
+scribe = "spells.scribe:main"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
