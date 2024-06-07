@@ -3,86 +3,291 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Modern HTML with jQuery and InstantSearch.js</title>
+        <title>Relevant Brazeal</title>
         <!-- Include CSS for InstantSearch.js (optional) -->
         <link
-            href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.0.0/themes/instantsearch.min.css"
             rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.2.1/themes/reset-min.css"
+            integrity="sha256-D+cGTF0LVHjuEf+CDRkHeNw/KTHPg47t1AA/qmzxgtA="
+            crossorigin="anonymous"
         />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.2.1/themes/satellite-min.css"
+            integrity="sha256-mLWwgx85KhAdMLXtn+jK+WZjHgTkyMOTRYTDgDn5fiM="
+            crossorigin="anonymous"
+        />
+        <!-- Include instantsearch typesense adapter -->
+        <script src="https://cdn.jsdelivr.net/npm/typesense-instantsearch-adapter@2/dist/typesense-instantsearch-adapter.min.js"></script>
         <!-- Include jQuery library -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <!-- Include InstantSearch.js library -->
         <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.38.1/dist/instantsearch.production.min.js"></script>
         <style>
-            /* Add some basic styling */
             body {
                 font-family: Arial, sans-serif;
                 margin: 0;
                 padding: 20px;
+                background-color: #ffffff;
+                color: #000000;
             }
             .search-container {
-                max-width: 600px;
+                max-width: 1200px;
                 margin: 0 auto;
             }
             #search-box {
-                width: 100%;
-                padding: 10px;
                 margin-bottom: 20px;
             }
-            .results-container {
-                list-style: none;
+            .ais-SearchBox {
+                width: 100%;
+            }
+            .ais-SearchBox-form {
+                background: inherit;
+                width: 100%;
+            }
+            .ais-SearchBox-input {
+                width: 100%;
+                background-color: #f8f9fa;
+                color: #495057;
+                border-radius: 25px;
+                font-size: 30px;
+                padding: 10px 20px;
+                border: 1px solid #ced4da;
+                transition:
+                    border-color 0.3s ease,
+                    background-color 0.3s ease,
+                    box-shadow 0.3s ease;
+            }
+            .ais-SearchBox-input:focus {
+                border-color: #80bdff;
+                background-color: #ffffff;
+                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+                outline: none;
+            }
+            .content {
+                display: flex;
+            }
+            #facet-tags {
+                width: 250px;
+                margin-right: 20px;
+            }
+            .ais-Hits-list {
                 padding: 0;
+                list-style: none;
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 5px;
+            }
+            .ais-Hits-item {
+                display: flex;
+                flex-direction: column;
+                background-color: inherit;
+                padding: 0px !important;
+                margin: none;
             }
             .result-item {
-                padding: 10px;
-                border-bottom: 1px solid #ddd;
+                width: 100%;
+                box-sizing: border-box;
+                border: 1px solid #ddd;
+                border-radius: 16px;
+                text-align: center;
+                background-color: #f9f9f9;
+                flex-grow: 1;
+                position: relative;
+                padding: 5px;
+                cursor: pointer;
+            }
+            .result-item img {
+                width: 100%;
+                height: auto;
+                max-height: 350px;
+                object-fit: cover;
+                border-radius: 16px;
+                transition: transform 0.3s ease;
+                display: none; /* Hide the image initially */
+            }
+            .result-item strong {
+                display: block;
+                margin-bottom: 10px;
+                font-size: 1.2em;
+                color: #333;
+            }
+            .result-item .loading-placeholder {
+                width: 100%;
+                height: 350px;
+                background-color: #e0e0e0;
+                border-radius: 16px;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+            @media (prefers-color-scheme: dark) {
+                body {
+                    background-color: #121212;
+                    color: #ffffff;
+                }
+                .ais-SearchBox-input {
+                    background-color: #333333;
+                    color: #ffffff;
+                    border: 1px solid #444444;
+                    padding: 10px 20px 10px 40px;
+                }
+                .ais-SearchBox-input:focus {
+                    border-color: #007bff;
+                    background-color: #222222;
+                }
+                .result-item {
+                    border: 1px solid #444444;
+                    background-color: #1e1e1e;
+                }
+                .result-item strong {
+                    color: #ffffff;
+                }
+                .result-item .loading-placeholder {
+                    background-color: #444444;
+                }
+            }
+            #full-screen-img {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+            #full-screen-img img {
+                max-width: 90%;
+                max-height: 90%;
+            }
+            #close-btn {
+                position: absolute;
+                top: 10px;
+                right: 20px;
+                font-size: 24px;
+                color: white;
+                cursor: pointer;
+            }
+            header h1,
+            header h2,
+            header h4 {
+                font-family: "Roboto", sans-serif;
+                text-align: center;
+            }
+            header a {
+                text-decoration: underline;
+                color: inherit;
             }
         </style>
     </head>
     <body>
         <div class="search-container">
-            <input
-                type="text"
-                id="search-box"
-                placeholder="Search for comics..."
-            />
-            <ul class="results-container" id="hits"></ul>
+            <header>
+                <h1>Relevant Brazeal</h1>
+                <h2>
+                    Search
+                    <a href="https://typesense.org" target="_blank"
+                        >Powered by Typesense</a
+                    >, Enhanced with AI
+                </h2>
+                <h4>
+                    Comics index with permission from
+                    <a href="https://x.com/forrestbrazeal" target="_blank"
+                        >@forrestbrazeal</a
+                    >,
+                    <a href="https://www.goodtechthings.com" target="_blank"
+                        >goodtechthings.com</a
+                    >
+                </h4>
+            </header>
+            <div>
+                <div id="search-box"></div>
+            </div>
+            <div class="content">
+                <div id="facet-tags"></div>
+                <div class="results-container" id="hits"></div>
+            </div>
         </div>
-
         <script>
-            // Initialize InstantSearch.js
+            const typesenseInstantsearchAdapter =
+                new TypesenseInstantSearchAdapter({
+                    server: {
+                        apiKey: "xyz", // Be sure to use an API key that only allows search operations
+                        nodes: [
+                            {
+                                host: "localhost",
+                                path: "", // Optional. Example: If you have your typesense mounted in localhost:8108/typesense, path should be equal to '/typesense'
+                                port: "8108",
+                                protocol: "http",
+                            },
+                        ],
+                        cacheSearchResultsForSeconds: 2 * 60, // Cache search results from server. Defaults to 2 minutes. Set to 0 to disable caching.
+                    },
+                    additionalSearchParameters: {
+                        query_by: "title,description_*,embedding",
+                    },
+                });
+            const searchClient = typesenseInstantsearchAdapter.searchClient;
             const search = instantsearch({
-                indexName: "YOUR_INDEX_NAME", // Replace with your Algolia index name
-                searchClient: algoliasearch(
-                    "YOUR_APP_ID",
-                    "YOUR_SEARCH_API_KEY",
-                ),
+                searchClient,
+                indexName: "test-5",
             });
-
-            // Define the search box widget
+            // // Define the search box widget
             search.addWidget(
                 instantsearch.widgets.searchBox({
                     container: "#search-box",
+                    showReset: true,
+                    showSubmit: true,
+                    showLoadingIndicator: true,
                 }),
             );
-
+            // Define the facet on tags widget
+            search.addWidget(
+                instantsearch.widgets.refinementList({
+                    container: "#facet-tags",
+                    attribute: "tags",
+                    showMore: true,
+                    limit: 10,
+                }),
+            );
             // Define the hits widget
             search.addWidget(
                 instantsearch.widgets.hits({
                     container: "#hits",
                     templates: {
-                        item: `
-                        <li class="result-item">
-                            <strong>{{#helpers.highlight}}{ "attribute": "name" }{{/helpers.highlight}}</strong>
-                            <p>{{#helpers.highlight}}{ "attribute": "description" }{{/helpers.highlight}}</p>
-                        </li>
-                    `,
+                        item: `<div class="result-item" onclick="window.open('https://www.goodtechthings.com/{{slug}}', '_blank')">
+                            <strong>{{title}}</strong>
+                            <div class="loading-placeholder"></div>
+                            <img src="{{url}}" alt="{{suggested_alt_text}}" onload="this.style.display='block'; this.previousElementSibling.style.display='none';" />
+                        </div>`,
                     },
                 }),
             );
-
             // Start InstantSearch
             search.start();
+            // jQuery script for image hover effect
+            $(document)
+                .on("mouseenter", ".result-item img", function () {
+                    $(this).css({
+                        transform: "scale(1.5)",
+                        "z-index": 1,
+                        position: "relative",
+                        "max-width": "none",
+                        "max-height": "none",
+                    });
+                })
+                .on("mouseleave", ".result-item img", function () {
+                    $(this).css({
+                        transform: "scale(1)",
+                        "z-index": 0,
+                        position: "relative",
+                        "max-width": "100%",
+                        "max-height": "350px",
+                    });
+                });
         </script>
     </body>
 </html>

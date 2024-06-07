@@ -28,7 +28,28 @@ def write_to_typesense(json_data, client, collection_name):
     document_example = json_data[0]
     schema = {
         'name': collection_name,
-        'fields': [{'name': key, 'type': 'auto'} for key in document_example.keys()]
+        'fields': [
+            {'name': key, 'type': 'auto'} for key in document_example.keys() if key not in ['description_humor', 'description_environment', 'title', 'tags', 'embedding']
+        ] + [
+            { 'name': 'description_humor', 'type': 'string' },
+            { 'name': 'description_environment', 'type': 'string' },
+            { 'name': 'title', 'type': 'string' },
+            {'name': 'tags', 'type': 'string[]', 'facet': True},
+            {
+                "name": "embedding",
+                "type": "float[]",
+                "embed": {
+                    "from": [
+                    "description_humor",
+                    "description_environment",
+                    "title"
+                    ],
+                    "model_config": {
+                    "model_name": "ts/gte-small"
+                    }
+                }
+            }
+        ]
     }
 
     client.collections.create(schema)
