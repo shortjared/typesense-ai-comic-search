@@ -17,12 +17,6 @@
             integrity="sha256-mLWwgx85KhAdMLXtn+jK+WZjHgTkyMOTRYTDgDn5fiM="
             crossorigin="anonymous"
         />
-        <!-- Include instantsearch typesense adapter -->
-        <script src="https://cdn.jsdelivr.net/npm/typesense-instantsearch-adapter@2/dist/typesense-instantsearch-adapter.min.js"></script>
-        <!-- Include jQuery library -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <!-- Include InstantSearch.js library -->
-        <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.38.1/dist/instantsearch.production.min.js"></script>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -72,15 +66,15 @@
                 margin-right: 20px;
             }
             .ais-Hits-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px; /* Adjusted gap for better spacing */
                 padding: 0;
                 list-style: none;
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 5px;
             }
             .ais-Hits-item {
-                display: flex;
-                flex-direction: column;
+                flex: 1 1 calc(33.333% - 20px); /* Three items per row */
+                box-sizing: border-box;
                 background-color: inherit;
                 padding: 0px !important;
                 margin: none;
@@ -147,30 +141,6 @@
                     background-color: #444444;
                 }
             }
-            #full-screen-img {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.8);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-            }
-            #full-screen-img img {
-                max-width: 90%;
-                max-height: 90%;
-            }
-            #close-btn {
-                position: absolute;
-                top: 10px;
-                right: 20px;
-                font-size: 24px;
-                color: white;
-                cursor: pointer;
-            }
             header h1,
             header h2,
             header h4 {
@@ -189,7 +159,7 @@
                 <h1>Relevant Brazeal</h1>
                 <h2>
                     Search
-                    <a href="https://typesense.org" target="_blank"
+                    <a href="https://shortclick.link/9kl00z" target="_blank"
                         >Powered by Typesense</a
                     >, Enhanced with AI
                 </h2>
@@ -211,17 +181,24 @@
                 <div class="results-container" id="hits"></div>
             </div>
         </div>
+
+        <!-- Include instantsearch typesense adapter -->
+        <script src="https://cdn.jsdelivr.net/npm/typesense-instantsearch-adapter@2/dist/typesense-instantsearch-adapter.min.js"></script>
+        <!-- Include jQuery library -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- Include InstantSearch.js library -->
+        <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.38.1/dist/instantsearch.production.min.js"></script>
         <script>
             const typesenseInstantsearchAdapter =
                 new TypesenseInstantSearchAdapter({
                     server: {
-                        apiKey: "xyz", // Be sure to use an API key that only allows search operations
+                        apiKey: "NgiyuUKZ75x1fWIrS7t4kxGL0txZgEqd", // Be sure to use an API key that only allows search operations
                         nodes: [
                             {
-                                host: "localhost",
+                                host: "b89sv02ladegmc4tp-1.a1.typesense.net",
                                 path: "", // Optional. Example: If you have your typesense mounted in localhost:8108/typesense, path should be equal to '/typesense'
-                                port: "8108",
-                                protocol: "http",
+                                port: "443",
+                                protocol: "https",
                             },
                         ],
                         cacheSearchResultsForSeconds: 2 * 60, // Cache search results from server. Defaults to 2 minutes. Set to 0 to disable caching.
@@ -233,9 +210,14 @@
             const searchClient = typesenseInstantsearchAdapter.searchClient;
             const search = instantsearch({
                 searchClient,
-                indexName: "test-5",
+                indexName: "relevant-brazeal",
+                searchFunction(helper) {
+                    helper.state.hitsPerPage = 9; // Set the hitsPerPage here
+                    helper.search();
+                },
             });
-            // // Define the search box widget
+
+            // Define the search box widget
             search.addWidget(
                 instantsearch.widgets.searchBox({
                     container: "#search-box",
@@ -244,6 +226,7 @@
                     showLoadingIndicator: true,
                 }),
             );
+
             // Define the facet on tags widget
             search.addWidget(
                 instantsearch.widgets.refinementList({
@@ -259,10 +242,20 @@
                     container: "#hits",
                     templates: {
                         item: `<div class="result-item" onclick="window.open('https://www.goodtechthings.com/{{slug}}', '_blank')">
-                            <strong>{{title}}</strong>
-                            <div class="loading-placeholder"></div>
-                            <img src="{{url}}" alt="{{suggested_alt_text}}" onload="this.style.display='block'; this.previousElementSibling.style.display='none';" />
-                        </div>`,
+                    <strong>{{title}}</strong>
+                    <div class="loading-placeholder"></div>
+                    <img src="{{optimized_image_url}}" alt="{{suggested_alt_text}}"
+                    onload="this.style.display='block'; this.previousElementSibling.style.display='none';" />
+                </div>`,
+                    },
+                    transformItems(items) {
+                        return items.map((item) => ({
+                            ...item,
+                            optimized_image_url: item.url.replace(
+                                "/images",
+                                "/images/size/w300",
+                            ),
+                        }));
                     },
                 }),
             );
